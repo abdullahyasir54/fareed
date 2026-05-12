@@ -9,6 +9,7 @@ import {
   getSession,
 } from "@/lib/auth";
 import { addRequest, markRequestDone, RequestType } from "@/lib/store";
+import { notifyFareed } from "@/lib/webpush";
 
 export async function login(
   _prevState: { error: string },
@@ -49,6 +50,15 @@ export async function sendRequest(
   await addRequest({ type, username: session.username, instructions });
   revalidatePath("/fareed");
   revalidatePath("/employee");
+
+  const labels: Record<string, string> = {
+    tea: "Tea ☕", coffee: "Coffee ☕", food: "Food 🍽️", custom: "Custom request ✏️",
+  };
+  const body = instructions
+    ? `${instructions}`
+    : `${session.username} is asking for ${labels[type] ?? type}`;
+  await notifyFareed(`New request: ${labels[type] ?? type}`, body).catch(() => {});
+
   return { success: true, error: "" };
 }
 

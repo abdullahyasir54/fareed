@@ -2,6 +2,7 @@ import { getSession } from "@/lib/auth";
 import { logout, markDone } from "@/app/actions";
 import { getRequests } from "@/lib/store";
 import { redirect } from "next/navigation";
+import NotificationToggle from "./NotificationToggle";
 
 const TYPE_META: Record<string, { label: string; emoji: string; color: string }> = {
   tea:    { label: "Tea",    emoji: "🍵", color: "bg-amber-100 text-amber-700" },
@@ -37,6 +38,7 @@ export default async function FareedDashboard() {
             <p className="text-xs text-gray-500">Admin Panel</p>
           </div>
           <div className="flex items-center gap-3">
+            <NotificationToggle />
             <span className="hidden sm:block text-sm text-gray-600">
               Logged in as{" "}
               <span className="font-semibold text-indigo-600">{session.username}</span>
