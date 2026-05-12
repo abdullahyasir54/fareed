@@ -5,7 +5,7 @@ const SECRET = new TextEncoder().encode("fareed-app-secret-key-2024");
 
 const PUBLIC_PATHS = ["/login"];
 
-export async function middleware(req: NextRequest) {
+export async function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   if (PUBLIC_PATHS.includes(pathname)) {
