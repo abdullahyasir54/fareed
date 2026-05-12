@@ -1,7 +1,18 @@
 self.addEventListener("push", (event) => {
   if (!event.data) return;
 
-  const { title, body, url } = event.data.json();
+  let title = "New Request";
+  let body = "";
+  let url = "/fareed";
+
+  try {
+    const data = event.data.json();
+    title = data.title ?? title;
+    body = data.body ?? body;
+    url = data.url ?? url;
+  } catch {
+    body = event.data.text();
+  }
 
   event.waitUntil(
     self.registration.showNotification(title, {
@@ -11,7 +22,7 @@ self.addEventListener("push", (event) => {
       vibrate: [200, 100, 200],
       tag: "fareed-request",
       renotify: true,
-      data: { url: url || "/fareed" },
+      data: { url },
     })
   );
 });
